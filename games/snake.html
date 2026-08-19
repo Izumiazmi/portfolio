@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Snake Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: transparent;
+        }
+
+        /* Memastikan gambar pixel art ular tidak buram */
+        canvas {
+            image-rendering: pixelated;
+        }
+    </style>
+</head>
+<!-- Padding tipis agar papan game memenuhi hampir seluruh layar, hanya sedikit ruang di atas untuk header -->
+
+<body class="text-[11px] text-gray-500 p-2 m-0 w-full h-full overflow-hidden flex flex-col box-border">
+
+    <!-- Header Game: Posisi fix di atas, ruang minim -->
+    <div class="flex justify-between w-full mb-1.5 text-[10px] uppercase tracking-widest font-bold flex-shrink-0">
+        <span class="text-orange-500">SNAKE</span>
+        <span id="score-text" class="text-gray-400">SCORE: 0</span>
+    </div>
+
+    <!-- Papan Game: Mengisi seluruh sisa ruang yang ada di bawah header -->
+    <div id="board-container"
+        class="relative w-full flex-1 rounded border border-gray-800 shadow-[inset_0_0_20px_rgba(0,0,0,1)] bg-[#050505] overflow-hidden">
+
+        <!-- Kanvas yang akan di-resize otomatis oleh JS -->
+        <canvas id="gameCanvas" class="block w-full h-full"></canvas>
+
+        <!-- Menu Overlay (Pause/Start/Game Over) -->
+        <div id="pause-menu"
+            class="absolute inset-0 bg-black/90 flex flex-col items-center justify-center z-10 transition-opacity">
+            <div id="pause-title"
+                class="text-orange-500 font-bold mb-6 tracking-widest text-lg drop-shadow-[0_0_8px_rgba(249,115,22,0.8)]">
+                SNAKE</div>
+            <ul id="pause-list" class="space-y-3 text-[10px] font-bold tracking-widest uppercase">
+                <!-- List dirender oleh JavaScript -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const boardContainer = document.getElementById('board-container');
+        const scoreText = document.getElementById('score-text');
+
+        // Dinamis Grid Setup
+        const gridSize = 15; // Ukuran 1 kotak ular
+        let cols = 0;
+        let rows = 0;
+
+        // Fungsi agar kanvas menghitung dan menyesuaikan ukurannya dengan container-nya
+        function resizeCanvas() {
+            canvas.width = boardContainer.clientWidth;
+            canvas.height = boardContainer.clientHeight;
+
+            // Menghitung berapa kotak yang muat di layar saat ini
+            cols = Math.floor(canvas.width / gridSize);
+            rows = Math.floor(canvas.height / gridSize);
+        }
+
+        // Jalankan saat pertama kali dimuat
+        resizeCanvas();
+
+        let snake = [{ x: 5, y: 5 }];
+        let food = { x: 10, y: 10 };
+        let dx = 1, dy = 0;
+        let nextDx = 1, nextDy = 0;
+        let score = 0;
+
+        // Sistem State Menu
+        let gameState = 'READY'; // READY, PLAYING, PAUSED, GAMEOVER
+        let menuOptions = [];
+        let menuIdx = 0;
+
+        // --- MANAJEMEN MENU OVERLAY ---
+        function renderMenu() {
+            const menuEl = document.getElementById('pause-menu');
+            const listEl = document.getElementById('pause-list');
+            const titleEl = document.getElementById('pause-title');
+
+            if (gameState === 'PLAYING') {
+                menuEl.classList.add('hidden');
+                return;
+            }
+
+            menuEl.classList.remove('hidden');
+
+            if (gameState === 'READY') {
+                titleEl.innerText = 'SNAKE';
+                titleEl.className = "text-orange-500 font-bold mb-6 tracking-widest text-lg drop-shadow-[0_0_8px_rgba(249,115,22,0.8)]";
+                menuOptions = [
+                    { label: 'START GAME', action: 'start' },
+                    { label: 'EXIT TO GAMES', action: 'exit' }
+                ];
+            } else if (gameState === 'PAUSED') {
+                titleEl.innerText = 'PAUSED';
+                titleEl.className = "text-gray-400 font-bold mb-6 tracking-widest text-lg";
+                menuOptions = [
+                    { label: 'RESUME', action: 'resume' },
+                    { label: 'RESTART', action: 'start' },
+                    { label: 'EXIT TO GAMES', action: 'exit' }
+                ];
+            } else if (gameState === 'GAMEOVER') {
+                titleEl.innerText = 'GAME OVER';
+                titleEl.className = "text-red-500 font-bold mb-6 tracking-widest text-lg drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]";
+                menuOptions = [
+                    { label: 'TRY AGAIN', action: 'start' },
+                    { label: 'EXIT TO GAMES', action: 'exit' }
+                ];
+            }
+
+            if (menuIdx >= menuOptions.length) menuIdx = menuOptions.length - 1;
+
+            listEl.innerHTML = '';
+            menuOptions.forEach((opt, idx) => {
+                const li = document.createElement('li');
+                li.className = "flex items-center space-x-2";
+
+                const cursor = idx === menuIdx ? '<span class="text-orange-500 animate-pulse">&gt;</span>' : '<span class="opacity-0">&gt;</span>';
+                const textClass = idx === menuIdx ? 'text-gray-200' : 'text-gray-600';
+
+                li.innerHTML = `${cursor} <span class="${textClass}">${opt.label}</span>`;
+                listEl.appendChild(li);
+            });
+        }
+
+        function executeMenuAction() {
+            const action = menuOptions[menuIdx].action;
+            if (action === 'start') {
+                resetGame();
+                gameState = 'PLAYING';
+                renderMenu();
+                gameLoop();
+            } else if (action === 'resume') {
+                gameState = 'PLAYING';
+                renderMenu();
+                gameLoop();
+            } else if (action === 'exit') {
+                window.parent.goToGames();
+            }
+        }
+
+        // --- LOGIKA GAME SNAKE ---
+        function resetGame() {
+            // Tempatkan ular di tengah layar berdasarkan kolom dinamis
+            const startX = Math.floor(cols / 2);
+            const startY = Math.floor(rows / 2);
+            snake = [{ x: startX, y: startY }];
+            dx = 1; dy = 0;
+            nextDx = 1; nextDy = 0;
+            score = 0;
+            scoreText.innerText = `SCORE: 0`;
+            placeFood();
+        }
+
+        function placeFood() {
+            food.x = Math.floor(Math.random() * cols);
+            food.y = Math.floor(Math.random() * rows);
+
+            // Pastikan makanan tidak muncul di atas badan ular
+            for (let segment of snake) {
+                if (segment.x === food.x && segment.y === food.y) {
+                    placeFood();
+                    break;
+                }
+            }
+        }
+
+        function gameLoop() {
+            if (gameState !== 'PLAYING') return;
+
+            dx = nextDx; dy = nextDy;
+            const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+
+            // Teleportasi Dinding Dinamis menyesuaikan ukuran layar
+            if (head.x < 0) head.x = cols - 1;
+            if (head.x >= cols) head.x = 0;
+            if (head.y < 0) head.y = rows - 1;
+            if (head.y >= rows) head.y = 0;
+
+            // Cek Tabrak Badan Sendiri
+            for (let i = 0; i < snake.length; i++) {
+                if (head.x === snake[i].x && head.y === snake[i].y) {
+                    gameState = 'GAMEOVER';
+                    menuIdx = 0;
+                    renderMenu();
+                    return;
+                }
+            }
+
+            snake.unshift(head);
+
+            // Cek Makan
+            if (head.x === food.x && head.y === food.y) {
+                score += 10;
+                scoreText.innerText = `SCORE: ${score}`;
+                placeFood();
+            } else {
+                snake.pop(); // Hapus ekor jika tidak makan
+            }
+
+            draw();
+            setTimeout(gameLoop, 100);
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Gambar Makanan
+            ctx.fillStyle = '#f97316'; // Orange-500
+            ctx.fillRect(food.x * gridSize + 1, food.y * gridSize + 1, gridSize - 2, gridSize - 2);
+
+            // Gambar Ular
+            snake.forEach((segment, idx) => {
+                if (idx === 0) ctx.fillStyle = '#f97316'; // Kepala oranye
+                else ctx.fillStyle = '#9ca3af'; // Ekor abu-abu
+                ctx.fillRect(segment.x * gridSize + 1, segment.y * gridSize + 1, gridSize - 2, gridSize - 2);
+            });
+        }
+
+        // --- PENANGANAN INPUT DARI DEVICE UTAMA (index.html) ---
+        window.handleArrowInput = function (action) {
+            if (gameState === 'PLAYING') {
+                if (action === 'top' && dy === 0) { nextDx = 0; nextDy = -1; }
+                if (action === 'bottom' && dy === 0) { nextDx = 0; nextDy = 1; }
+                if (action === 'left' && dx === 0) { nextDx = -1; nextDy = 0; }
+                if (action === 'right' && dx === 0) { nextDx = 1; nextDy = 0; }
+            } else {
+                if (action === 'top') {
+                    menuIdx = Math.max(0, menuIdx - 1);
+                    renderMenu();
+                } else if (action === 'bottom') {
+                    menuIdx = Math.min(menuOptions.length - 1, menuIdx + 1);
+                    renderMenu();
+                } else if (action === 'center') {
+                    executeMenuAction();
+                }
+            }
+        };
+
+        window.handleMenuButton = function () {
+            if (gameState === 'PLAYING') {
+                gameState = 'PAUSED';
+                menuIdx = 0;
+                renderMenu();
+            } else if (gameState === 'PAUSED') {
+                gameState = 'PLAYING';
+                renderMenu();
+                gameLoop();
+            }
+        };
+
+        // Render Awal Saat Halaman Dimuat
+        draw();
+        renderMenu();
+
+        // Antisipasi jika user melakukan rotasi layar HP (Responsive resize)
+        window.addEventListener('resize', () => {
+            if (gameState === 'READY' || gameState === 'GAMEOVER') {
+                resizeCanvas();
+                draw();
+            }
+        });
+    </script>
+</body>
+
+</html>

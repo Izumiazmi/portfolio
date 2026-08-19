@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Detail Sertifikat 4</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: transparent;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body class="text-[11px] text-gray-500 p-4 sm:p-5 h-screen flex flex-col relative overflow-hidden">
+    <div class="flex justify-between text-gray-600 mb-4 uppercase tracking-widest text-[9px] flex-shrink-0">
+        <span class="text-orange-500 font-bold">/CERTIFICATE</span>
+        <span>DOC 04</span>
+    </div>
+    <div id="scroll-area" class="flex-1 min-h-0 overflow-y-auto pr-2 space-y-4">
+        <div class="w-full rounded border-2 border-gray-700 overflow-hidden relative">
+            <img src="../images/sertif/4.jpg" alt="Sertifikat 4" class="w-full h-auto object-cover opacity-80">
+        </div>
+        <div>
+            <h1 class="text-orange-500 font-bold mb-1 text-[12px]">Praktik Kerja Lapangan (PKL)</h1>
+            <p class="text-gray-400 font-bold mb-2">Inovindo Digital Media</p>
+            <p class="text-gray-400 leading-relaxed text-[10px] mb-3">
+                Sertifikat ini diberikan karena telah berhasil menyelesaikan Praktik Kerja Lapangan (PKL) untuk
+                kompetensi keahlian Rekayasa Perangkat Lunak mulai tanggal 23 Mei 2023 hingga 23 Oktober 2023.
+            </p>
+            <div class="text-gray-600 text-[9px] space-y-1">
+                <div class="flex justify-between border-b border-gray-800 pb-1">
+                    <span>Issued Date</span>
+                    <span class="text-gray-400">23 Oktober 2023</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-800 pb-1">
+                    <span>Credential ID</span>
+                    <span class="text-gray-400">011/IDM/PKL.SERTIFIKAT/IX/2023</span>
+                </div>
+            </div>
+        </div>
+        <div class="h-12 w-full flex-shrink-0"></div>
+    </div>
+    <div class="mt-2 pt-2 border-t border-gray-800/50 text-gray-600 flex-shrink-0 text-[8px] text-center">
+        Use <span class="text-orange-500 font-bold">LEFT</span> to go back
+    </div>
+    <script>
+        const scrollArea = document.getElementById('scroll-area');
+        window.handleBackButton = function () {
+            window.parent.currentScreen = 'education.html';
+            window.parent.screenBeforeMenu = 'education.html';
+            window.location.href = '../education.html';
+        };
+        window.handleArrowInput = function (action) {
+            if (action === 'left') {
+                window.handleBackButton();
+                return;
+            }
+            if (action === 'top') scrollArea.scrollBy({ top: -60, behavior: 'smooth' });
+            else if (action === 'bottom') scrollArea.scrollBy({ top: 60, behavior: 'smooth' });
+        };
+    </script>
+</body>
+
+</html>

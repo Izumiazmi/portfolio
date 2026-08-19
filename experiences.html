@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Experiences</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: transparent;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body class="text-[11px] text-gray-500 p-4 sm:p-5 h-screen flex flex-col relative overflow-hidden">
+    <!-- Header Halaman -->
+    <div class="flex justify-between text-gray-600 mb-4 uppercase tracking-widest text-[9px] flex-shrink-0">
+        <span class="text-orange-500 font-bold">/EXPERIENCES</span>
+        <span>INDEX 03</span>
+    </div>
+
+    <!-- Area Konten (Dapat digulir) -->
+    <div id="scroll-area" class="flex-1 min-h-0 overflow-y-auto pr-2 space-y-5">
+
+        <!-- PENGALAMAN KERJA / MAGANG -->
+        <div class="border-l-2 border-orange-500/30 pl-3">
+            <h2 class="text-orange-500 font-bold">Freelance Web Developer</h2>
+            <p class="text-gray-400 mt-1">Membangun aplikasi web full-stack menggunakan Laravel, PHP, Tailwind CSS,
+                Bootstrap, dan JavaScript.</p>
+            <p class="text-gray-600 text-[9px] mt-1">2024 - Present</p>
+        </div>
+
+        <div class="border-l-2 border-orange-500/30 pl-3">
+            <h2 class="text-orange-500 font-bold">BPJS Ketenagakerjaan</h2>
+            <p class="text-gray-400 mt-1">Pelaksanaan program Magang di kantor cabang Bengkulu.</p>
+            <p class="text-gray-600 text-[9px] mt-1">Jun 2024 - Jul 2024</p>
+        </div>
+
+        <div class="border-l-2 border-orange-500/30 pl-3">
+            <h2 class="text-orange-500 font-bold">Inovindo Digital Media</h2>
+            <p class="text-gray-400 mt-1">Praktik Kerja Lapangan (PKL) untuk kompetensi keahlian Rekayasa Perangkat
+                Lunak.</p>
+            <p class="text-gray-600 text-[9px] mt-1">Mei 2023 - Okt 2023</p>
+        </div>
+
+        <!-- PROYEK-PROYEK -->
+        <div class="border-t border-gray-800/50 pt-3 mt-4">
+            <h2 class="text-gray-600 font-bold mb-3 uppercase tracking-widest text-[9px]">/NOTABLE PROJECTS</h2>
+
+            <div class="space-y-4">
+                <div class="border-l-2 border-gray-700 pl-3">
+                    <h2 class="text-gray-300 font-bold">Flood Monitoring IoT</h2>
+                    <p class="text-gray-400 mt-1 text-[10px]">Real-time water level app with Chart.js, Maps, and ESP
+                        MQTT pipeline.</p>
+                </div>
+
+                <div class="border-l-2 border-gray-700 pl-3">
+                    <h2 class="text-gray-300 font-bold">WA Alert System</h2>
+                    <p class="text-gray-400 mt-1 text-[10px]">Automated system health status and alerts utilizing Fonnte
+                        API on Laravel.</p>
+                </div>
+
+                <div class="border-l-2 border-gray-700 pl-3">
+                    <h2 class="text-gray-300 font-bold">Drive API Manager</h2>
+                    <p class="text-gray-400 mt-1 text-[10px]">Web-based customer & document management integrated with
+                        Google Drive.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pengganjal agar bisa di-scroll penuh ke atas -->
+        <div class="h-8 w-full flex-shrink-0"></div>
+    </div>
+
+    <!-- Footer Instruksi -->
+    <div class="mt-2 pt-2 border-t border-gray-800/50 text-gray-600 flex-shrink-0 text-[8px] text-center">
+        Use <span class="text-orange-500 font-bold">UP/DOWN</span> to scroll
+    </div>
+
+    <!-- SCRIPT LOGIKA KONTROL D-PAD -->
+    <script>
+        const scrollArea = document.getElementById('scroll-area');
+
+        // Fungsi Panah D-Pad dari parent index.html
+        window.handleArrowInput = function (action) {
+            if (action === 'top') {
+                scrollArea.scrollBy({ top: -50, behavior: 'smooth' });
+            } else if (action === 'bottom') {
+                scrollArea.scrollBy({ top: 50, behavior: 'smooth' });
+            }
+        };
+    </script>
+</body>
+
+</html>

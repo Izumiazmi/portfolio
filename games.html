@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Game Menu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: transparent;
+        }
+    </style>
+</head>
+
+<body class="text-[11px] text-gray-500 p-4 sm:p-5 h-full flex flex-col">
+
+    <div class="flex justify-between text-gray-600 mb-4 uppercase tracking-widest text-[9px] flex-shrink-0">
+        <span class="text-orange-500 font-bold">/GAMES</span>
+        <span>SELECTION</span>
+    </div>
+
+    <div class="flex-1 overflow-y-auto pr-2 space-y-4">
+        <ul id="game-list" class="space-y-3 font-bold text-gray-400">
+            <!-- List dirender oleh JS -->
+        </ul>
+    </div>
+
+    <div class="mt-4 pt-2 border-t border-gray-800/50 text-gray-600 flex-shrink-0 text-[9px] animate-pulse">
+        <span class="text-orange-500 font-bold">CENTER</span> to select
+    </div>
+
+    <script>
+        const games = [
+            { label: 'SNAKE', url: 'games/snake.html', type: 'game' },
+            { label: 'BREAKOUT', url: 'games/breakout.html', type: 'game' },
+        ];
+
+        let activeIdx = 0;
+        const listEl = document.getElementById('game-list');
+
+        function renderList() {
+            listEl.innerHTML = '';
+            games.forEach((game, idx) => {
+                const li = document.createElement('li');
+                li.className = 'flex items-center space-x-2';
+                const cursor = idx === activeIdx ? '<span class="text-orange-500">&gt;</span>' : '<span class="opacity-0">&gt;</span>';
+                const textClass = idx === activeIdx ? 'text-gray-200' : 'text-gray-600';
+
+                li.innerHTML = `${cursor} <span class="${textClass}">${game.label}</span>`;
+                listEl.appendChild(li);
+            });
+        }
+
+        window.handleArrowInput = function (action) {
+            if (action === 'top') {
+                activeIdx = Math.max(0, activeIdx - 1);
+            } else if (action === 'bottom') {
+                activeIdx = Math.min(games.length - 1, activeIdx + 1);
+            } else if (action === 'center') {
+                const selected = games[activeIdx];
+                if (selected.type === 'game') {
+                    if (selected.url !== '#') window.parent.goToGame(selected.url);
+                } else {
+                    // Jika memilih About, dll dari daftar, kembali ke Base Page (keluar dari mode Panah)
+                    window.parent.basePage = selected.url;
+                    window.parent.currentScreen = selected.url;
+                    window.parent.isNavMode = false;
+                    window.parent.document.getElementById('screen-frame').src = selected.url;
+                    window.parent.renderDpadIcons();
+                    window.parent.updateBaseIcons(); // Fungsi di index.html yang dinyalakan dari sini
+                }
+            }
+            renderList();
+        };
+
+        renderList();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Muhammad Habib Al Azmi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #0a0a05;
+        }
+
+        /* Scanline Effect */
+        .scanlines {
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a05;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f97316;
+        }
+
+        .glow-text {
+            text-shadow: 0 0 10px rgba(249, 115, 22, 0.6);
+        }
+
+        .glow-border:hover {
+            box-shadow: 0 0 15px rgba(249, 115, 22, 0.3), inset 0 0 10px rgba(249, 115, 22, 0.1);
+        }
+
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .hide-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body class="text-gray-400 relative selection:bg-orange-500 selection:text-white">
+
+    <!-- Efek Garis Layar CRT Tipis -->
+    <div class="scanlines fixed inset-0 z-50 opacity-20"></div>
+
+    <!-- NAVBAR -->
+    <nav class="fixed top-0 left-0 right-0 z-40 bg-[#0a0a05]/95 border-b border-gray-800/80 backdrop-blur-md">
+        <div
+            class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center text-[10px] sm:text-xs uppercase tracking-[0.2em]">
+            <div class="text-orange-500 font-bold glow-text flex items-center">
+                <span>/IZUMI_SYS</span>
+                <span class="text-gray-600 ml-2">v3.0</span>
+            </div>
+
+            <!-- Menu Desktop -->
+            <div class="hidden lg:flex space-x-6">
+                <a href="#home" class="hover:text-orange-500 transition-colors">/HOME</a>
+                <a href="#about" class="hover:text-orange-500 transition-colors">/ABOUT</a>
+                <a href="#education" class="hover:text-orange-500 transition-colors">/EDU</a>
+                <a href="#experiences" class="hover:text-orange-500 transition-colors">/EXP</a>
+                <a href="#project" class="hover:text-orange-500 transition-colors">/PROJECT</a>
+                <a href="#certificate" class="hover:text-orange-500 transition-colors">/CERT</a>
+                <a href="#contact"
+                    class="hover:text-orange-500 transition-colors text-orange-400 border border-orange-500/30 px-2 py-0.5 rounded-sm">/CONTACT</a>
+            </div>
+
+            <button id="mobile-menu-btn" class="lg:hidden text-orange-500 hover:text-orange-400 focus:outline-none">[
+                MENU ]</button>
+        </div>
+
+        <!-- Menu Mobile -->
+        <div id="mobile-menu"
+            class="hidden lg:hidden bg-[#121214] border-b border-gray-800 text-[10px] tracking-[0.2em] uppercase">
+            <a href="#home" class="block py-3 px-6 hover:bg-gray-900 border-b border-gray-800/50">/HOME</a>
+            <a href="#about" class="block py-3 px-6 hover:bg-gray-900 border-b border-gray-800/50">/ABOUT</a>
+            <a href="#education" class="block py-3 px-6 hover:bg-gray-900 border-b border-gray-800/50">/EDU</a>
+            <a href="#experiences" class="block py-3 px-6 hover:bg-gray-900 border-b border-gray-800/50">/EXP</a>
+            <a href="#project" class="block py-3 px-6 hover:bg-gray-900 border-b border-gray-800/50">/PROJECT</a>
+            <a href="#certificate" class="block py-3 px-6 hover:bg-gray-900 border-b border-gray-800/50">/CERT</a>
+            <a href="#contact" class="block py-3 px-6 hover:bg-gray-900 text-orange-500">/CONTACT</a>
+        </div>
+    </nav>
+
+    <!-- KONTEN UTAMA -->
+    <main class="max-w-5xl mx-auto px-6 sm:px-12 pt-24 pb-12 space-y-24">
+
+        <!-- 1. HOME -->
+        <section id="home" class="min-h-[80vh] flex flex-col justify-center items-start">
+            <p class="text-gray-600 text-xs sm:text-sm mb-4 uppercase tracking-[0.2em]">> SYSTEM_INITIALIZING...</p>
+            <h1 class="text-4xl sm:text-6xl text-orange-500 font-bold mb-4 glow-text tracking-tighter">
+                > HELLO_WORLD.<span
+                    class="cursor-blink inline-block w-4 sm:w-6 h-8 sm:h-12 bg-orange-500 ml-2 align-middle"></span>
+            </h1>
+            <p class="text-lg sm:text-xl text-gray-300 mb-8 max-w-2xl leading-relaxed">
+                I am <span class="text-orange-400 font-bold">Muhammad Habib Al Azmi</span>. <br>
+                Web Developer and Computer Science student at Politeknik Caltex Riau, specializing in web development,
+                security systems, and IoT solutions.
+            </p>
+            <div class="flex space-x-4">
+                <a href="#project"
+                    class="px-6 py-3 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-black transition-all duration-300 text-xs sm:text-sm uppercase tracking-widest font-bold">
+                    [ EXPLORE_PROJECTS ]
+                </a>
+                <a href="#contact"
+                    class="px-6 py-3 border border-gray-700 text-gray-400 hover:border-gray-500 transition-colors text-xs sm:text-sm uppercase tracking-widest">
+                    PING ME
+                </a>
+            </div>
+        </section>
+
+        <!-- 2. ABOUT & TECH STACK -->
+        <section id="about" class="pt-12 border-t border-gray-800/50 relative">
+            <div
+                class="absolute -top-[10px] left-10 bg-[#0a0a05] px-2 text-[10px] text-orange-500 tracking-widest font-bold">
+                /INDEX 01: ABOUT</div>
+
+            <div
+                class="bg-[#121214] border border-gray-800 rounded p-6 sm:p-8 shadow-inner flex flex-col md:flex-row gap-8 items-start">
+
+                <div class="flex-1">
+                    <div
+                        class="flex items-center space-x-2 text-[10px] sm:text-xs text-gray-500 mb-4 border-b border-gray-800 pb-2">
+                        <span class="uppercase tracking-widest text-green-500">> whoami</span>
+                    </div>
+                    <h2 class="text-orange-500 font-bold text-xl mb-3">Hello, I'm Muhammad Habib Al Azmi.</h2>
+                    <p class="text-gray-400 leading-relaxed text-sm mb-6">
+                        Web Developer and Computer Science student at Politeknik Caltex Riau, specializing in web
+                        development, security systems, and IoT solutions. I build robust web systems and connect them to
+                        hardware.
+                    </p>
+
+                    <!-- Tech Stack dari referensi Anda -->
+                    <div class="text-orange-500 mb-2 font-bold">> Tech Stack</div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-400 text-sm font-mono">
+                        <div class="border border-gray-800 p-2 pl-3 border-l-2 border-l-orange-500">- Laravel, PHP</div>
+                        <div class="border border-gray-800 p-2 pl-3 border-l-2 border-l-orange-500">- Tailwind CSS, HTML
+                        </div>
+                        <div class="border border-gray-800 p-2 pl-3 border-l-2 border-l-orange-500">- Linux, OS</div>
+                        <div class="border border-gray-800 p-2 pl-3 border-l-2 border-l-orange-500">- IoT (MQTT, ESP)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Foto Profil dengan Bingkai Retro -->
+                <div
+                    class="relative w-32 h-40 flex-shrink-0 border-2 border-orange-500 p-1 bg-black group self-center md:self-start">
+                    <img src="images/me.jpeg" alt="Habib Profile"
+                        class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity filter grayscale group-hover:grayscale-0">
+                    <div
+                        class="absolute -bottom-3 -right-3 bg-orange-500 text-black text-[9px] font-bold px-2 py-1 uppercase tracking-widest">
+                        LOADED</div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 3. EDUCATION -->
+        <section id="education" class="pt-12 border-t border-gray-800/50 relative">
+            <div
+                class="absolute -top-[10px] left-10 bg-[#0a0a05] px-2 text-[10px] text-orange-500 tracking-widest font-bold">
+                /INDEX 02: EDUCATION</div>
+
+            <div class="mt-8 space-y-6">
+                <div
+                    class="border-l-2 border-orange-500/50 pl-4 relative group hover:border-orange-500 transition-colors">
+                    <div
+                        class="absolute -left-[5px] top-1.5 w-2 h-2 bg-orange-500 rounded-full group-hover:shadow-[0_0_8px_#f97316] transition-shadow">
+                    </div>
+                    <h3 class="text-orange-400 text-lg font-bold">Politeknik Caltex Riau</h3>
+                    <p class="text-gray-300">Developer / Computer Science</p>
+                    <p class="text-gray-500 text-xs mt-1 font-mono">2024 - Present</p>
+                </div>
+
+                <div class="border-l-2 border-gray-700 pl-4 relative group hover:border-gray-500 transition-colors">
+                    <div class="absolute -left-[5px] top-1.5 w-2 h-2 bg-gray-600 rounded-full"></div>
+                    <h3 class="text-gray-400 text-lg font-bold">SMKN 4 Kota Bengkulu</h3>
+                    <p class="text-gray-500">Software Engineering</p>
+                    <p class="text-gray-600 text-xs mt-1 font-mono">2021 - 2024</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. EXPERIENCES -->
+        <section id="experiences" class="pt-12 border-t border-gray-800/50 relative">
+            <div
+                class="absolute -top-[10px] left-10 bg-[#0a0a05] px-2 text-[10px] text-orange-500 tracking-widest font-bold">
+                /INDEX 03: EXPERIENCES</div>
+
+            <div class="mt-8 space-y-8">
+                <!-- Exp 1 -->
+                <div
+                    class="bg-[#121214] border border-gray-800 p-6 rounded relative overflow-hidden glow-border transition-all">
+                    <div
+                        class="absolute top-0 right-0 bg-orange-500/10 text-orange-500 text-[9px] px-3 py-1 uppercase tracking-widest border-b border-l border-orange-500/20 font-mono">
+                        2024 - Present</div>
+                    <h3 class="text-orange-500 text-lg font-bold">Freelance Web Developer</h3>
+                    <p class="text-gray-400 mt-2 text-sm leading-relaxed">Membangun aplikasi web full-stack menggunakan
+                        Laravel, PHP, Tailwind CSS, Bootstrap, dan JavaScript.</p>
+                </div>
+
+                <!-- Exp 2 -->
+                <div
+                    class="bg-[#121214] border border-gray-800 p-6 rounded relative overflow-hidden hover:border-gray-600 transition-all">
+                    <div
+                        class="absolute top-0 right-0 bg-gray-800 text-gray-400 text-[9px] px-3 py-1 uppercase tracking-widest border-b border-l border-gray-700 font-mono">
+                        Jun 2024 - Jul 2024</div>
+                    <h3 class="text-gray-300 text-lg font-bold">BPJS Ketenagakerjaan</h3>
+                    <p class="text-gray-500 mt-2 text-sm leading-relaxed">Pelaksanaan program Magang di kantor cabang
+                        Bengkulu.</p>
+                </div>
+
+                <!-- Exp 3 -->
+                <div
+                    class="bg-[#121214] border border-gray-800 p-6 rounded relative overflow-hidden hover:border-gray-600 transition-all">
+                    <div
+                        class="absolute top-0 right-0 bg-gray-800 text-gray-400 text-[9px] px-3 py-1 uppercase tracking-widest border-b border-l border-gray-700 font-mono">
+                        Mei 2023 - Okt 2023</div>
+                    <h3 class="text-gray-300 text-lg font-bold">Inovindo Digital Media</h3>
+                    <p class="text-gray-500 mt-2 text-sm leading-relaxed">Praktik Kerja Lapangan (PKL) untuk kompetensi
+                        keahlian Rekayasa Perangkat Lunak.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. NOTABLE PROJECTS -->
+        <section id="project" class="pt-12 border-t border-gray-800/50 relative">
+            <div
+                class="absolute -top-[10px] left-10 bg-[#0a0a05] px-2 text-[10px] text-orange-500 tracking-widest font-bold">
+                /DIR/PROJECTS/</div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                <!-- Project 1 -->
+                <div
+                    class="group border border-gray-800 bg-[#121214] p-6 hover:border-orange-500/50 transition-all glow-border relative flex flex-col h-full">
+                    <h3 class="text-lg text-gray-200 font-bold mb-2 group-hover:text-orange-400 transition-colors">Flood
+                        Monitoring IoT</h3>
+                    <p class="text-sm text-gray-500 mb-6 flex-grow leading-relaxed">Real-time water level app with
+                        Chart.js, Maps, and ESP MQTT pipeline.</p>
+                    <div class="mt-auto flex flex-wrap gap-2 text-[9px] uppercase tracking-widest">
+                        <span class="bg-gray-900 text-orange-400 px-2 py-1 rounded-sm border border-gray-700">IoT /
+                            ESP</span>
+                        <span
+                            class="bg-gray-900 text-gray-400 px-2 py-1 rounded-sm border border-gray-700">Chart.js</span>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div
+                    class="group border border-gray-800 bg-[#121214] p-6 hover:border-orange-500/50 transition-all glow-border relative flex flex-col h-full">
+                    <h3 class="text-lg text-gray-200 font-bold mb-2 group-hover:text-orange-400 transition-colors">WA
+                        Alert System</h3>
+                    <p class="text-sm text-gray-500 mb-6 flex-grow leading-relaxed">Automated system health status and
+                        alerts utilizing Fonnte API on Laravel.</p>
+                    <div class="mt-auto flex flex-wrap gap-2 text-[9px] uppercase tracking-widest">
+                        <span
+                            class="bg-gray-900 text-orange-400 px-2 py-1 rounded-sm border border-gray-700">Laravel</span>
+                        <span class="bg-gray-900 text-gray-400 px-2 py-1 rounded-sm border border-gray-700">Fonnte
+                            API</span>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div
+                    class="group border border-gray-800 bg-[#121214] p-6 hover:border-orange-500/50 transition-all glow-border relative flex flex-col h-full">
+                    <h3 class="text-lg text-gray-200 font-bold mb-2 group-hover:text-orange-400 transition-colors">Drive
+                        API Manager</h3>
+                    <p class="text-sm text-gray-500 mb-6 flex-grow leading-relaxed">Web-based customer & document
+                        management integrated with Google Drive.</p>
+                    <div class="mt-auto flex flex-wrap gap-2 text-[9px] uppercase tracking-widest">
+                        <span class="bg-gray-900 text-orange-400 px-2 py-1 rounded-sm border border-gray-700">PHP</span>
+                        <span class="bg-gray-900 text-gray-400 px-2 py-1 rounded-sm border border-gray-700">G-Drive
+                            API</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. CERTIFICATES -->
+        <section id="certificate" class="pt-12 border-t border-gray-800/50 relative">
+            <div
+                class="absolute -top-[10px] left-10 bg-[#0a0a05] px-2 text-[10px] text-orange-500 tracking-widest font-bold">
+                /DATA/CERTIFICATES/</div>
+
+            <p class="text-xs text-gray-500 mt-6 mb-4 font-mono">> Slide to view certificates</p>
+
+            <!-- Horizontal Slider -->
+            <div class="flex space-x-4 overflow-x-auto hide-scroll snap-x snap-mandatory pb-4">
+                <div
+                    class="snap-center flex-shrink-0 w-64 md:w-80 h-48 md:h-60 border-2 border-gray-800 hover:border-orange-500 transition-colors p-1 bg-[#121214]">
+                    <img src="images/sertif/1.jpg" alt="Sertifikat 1"
+                        class="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity">
+                </div>
+                <div
+                    class="snap-center flex-shrink-0 w-64 md:w-80 h-48 md:h-60 border-2 border-gray-800 hover:border-orange-500 transition-colors p-1 bg-[#121214]">
+                    <img src="images/sertif/2.jpg" alt="Sertifikat 2"
+                        class="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity">
+                </div>
+                <div
+                    class="snap-center flex-shrink-0 w-64 md:w-80 h-48 md:h-60 border-2 border-gray-800 hover:border-orange-500 transition-colors p-1 bg-[#121214]">
+                    <img src="images/sertif/3.png" alt="Sertifikat 3"
+                        class="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity">
+                </div>
+                <div
+                    class="snap-center flex-shrink-0 w-64 md:w-80 h-48 md:h-60 border-2 border-gray-800 hover:border-orange-500 transition-colors p-1 bg-[#121214]">
+                    <img src="images/sertif/4.jpg" alt="Sertifikat 4"
+                        class="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity">
+                </div>
+                <div
+                    class="snap-center flex-shrink-0 w-64 md:w-80 h-48 md:h-60 border-2 border-gray-800 hover:border-orange-500 transition-colors p-1 bg-[#121214]">
+                    <img src="images/sertif/5.jpg" alt="Sertifikat 5"
+                        class="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity">
+                </div>
+                <div
+                    class="snap-center flex-shrink-0 w-64 md:w-80 h-48 md:h-60 border-2 border-gray-800 hover:border-orange-500 transition-colors p-1 bg-[#121214]">
+                    <img src="images/sertif/6.png" alt="Sertifikat 6"
+                        class="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity">
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. CONTACT -->
+        <section id="contact" class="pt-12 border-t border-gray-800/50 relative pb-12">
+            <div
+                class="absolute -top-[10px] left-10 bg-[#0a0a05] px-2 text-[10px] text-orange-500 tracking-widest font-bold">
+                /INDEX 04: CONTACT</div>
+
+            <div class="max-w-2xl mt-8">
+                <p class="text-gray-400 text-lg mb-8">Let's build something great together.</p>
+
+                <div
+                    class="space-y-4 font-mono text-sm sm:text-base bg-[#121214] border border-gray-800 p-6 sm:p-8 rounded shadow-inner">
+                    <div class="flex items-center space-x-4">
+                        <span class="text-gray-600 w-24">Email:</span>
+                        <a href="mailto:alazmimuhammadhabib@gmail.com"
+                            class="text-orange-500 hover:text-orange-400 hover:underline transition-colors break-all">alazmimuhammadhabib@gmail.com</a>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-gray-600 w-24">Github:</span>
+                        <a href="https://github.com/Izumiazmi" target="_blank"
+                            class="text-orange-500 hover:text-orange-400 hover:underline transition-colors break-all">https://github.com/Izumiazmi</a>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-gray-600 w-24">LinkedIn:</span>
+                        <a href="#"
+                            class="text-orange-500 hover:text-orange-400 hover:underline transition-colors break-all">in/areeb</a>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-4 border-t border-gray-800/50 text-orange-500 flex items-center font-mono text-sm">
+                    <span class="mr-3 animate-pulse">_</span> await connection...
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer
+        class="border-t border-gray-800/80 bg-[#0a0a05] p-6 text-center text-[10px] text-gray-600 tracking-[0.2em] uppercase relative z-40">
+        System Status: <span class="text-green-500">ONLINE</span> | Copyright 2026 &copy; - Muhammad Habib Al Azmi
+    </footer>
+
+    <!-- JS for Mobile Menu Toggle -->
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        const menuLinks = menu.querySelectorAll('a');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+
+</html>

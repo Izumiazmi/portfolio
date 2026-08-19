@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Menu Sistem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: transparent;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body class="text-[11px] text-gray-500 p-4 sm:p-5 h-full flex flex-col">
+    <div class="flex justify-between text-gray-600 mb-4 uppercase tracking-widest text-[9px] flex-shrink-0">
+        <span class="text-orange-500 font-bold">/SYSTEM_MENU</span>
+        <span>SETTINGS</span>
+    </div>
+
+    <div class="flex-1 overflow-y-auto pr-2 space-y-2">
+        <!-- <p class="text-gray-600 text-[9px] mb-1 uppercase">Preferences</p> -->
+        <div id="menu-list" class="space-y-2"></div>
+    </div>
+
+    <div class="mt-3 pt-2 border-t border-gray-800/50 text-gray-500 flex-shrink-0 text-[9px]">
+        <span class="text-orange-500 font-bold">D-PAD</span> navigate | <span
+            class="text-orange-500 font-bold">CENTER</span> select
+    </div>
+
+    <script>
+        // Mengambil data dari localStorage atau menggunakan nilai default
+        const menuData = [
+            { id: 'lang', label: 'Bahasa', values: ['ID', 'EN'], valIdx: parseInt(localStorage.getItem('lang_idx') || 0) },
+            { id: 'theme', label: 'Tema UI', values: ['Dark', 'Light'], valIdx: parseInt(localStorage.getItem('theme_idx') || 0) },
+            { id: 'music', label: 'Music', values: ['Off', 'Knight day hills', 'Party day encampment'], valIdx: parseInt(localStorage.getItem('music_idx') || 0) },
+            { id: 'suara', label: 'Suara', values: ['Mute', 'Low', 'Max'], valIdx: parseInt(localStorage.getItem('volume_idx') || 1) },
+            { id: 'reset', label: 'Reset Info', values: ['>'], valIdx: 0, isAction: true, actionType: 'reset' },
+            { id: 'games', label: 'Lainnya', values: ['>'], valIdx: 0, isAction: true, actionType: 'games' },
+        ];
+
+        const menuListEl = document.getElementById('menu-list');
+        let activeIndex = 0;
+        let isEditing = false;
+
+        function buildMenu() {
+            menuListEl.innerHTML = '';
+            menuData.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.id = 'item-' + idx;
+                div.className = 'menu-item w-full flex items-center justify-between p-2 rounded border transition-colors';
+                div.innerHTML = `<span class="label font-bold transition-colors"></span><span class="value transition-colors"></span>`;
+                menuListEl.appendChild(div);
+            });
+        }
+
+        function updateUI() {
+            menuData.forEach((item, idx) => {
+                const el = document.getElementById('item-' + idx);
+                const label = el.querySelector('.label');
+                const val = el.querySelector('.value');
+
+                label.innerText = item.label;
+                val.innerText = item.values[item.valIdx];
+
+                if (idx === activeIndex) {
+                    el.className = 'menu-item w-full flex items-center justify-between p-2 rounded border border-orange-500 bg-gray-900/60 transition-colors';
+                    label.className = 'label font-bold text-orange-500 transition-colors';
+                    if (isEditing) val.className = 'value text-orange-500 animate-pulse';
+                    else val.className = 'value text-gray-600';
+                } else {
+                    el.className = 'menu-item w-full flex items-center justify-between p-2 rounded border border-gray-800 transition-colors';
+                    label.className = 'label font-bold text-gray-300 transition-colors';
+                    val.className = 'value text-gray-600 transition-colors';
+                }
+            });
+        }
+
+        // Simpan ke localStorage dan terapkan ke index.html
+        function saveAndApply(md) {
+            localStorage.setItem(md.id + '_idx', md.valIdx);
+
+            // Jika Musik atau Suara diubah, langsung terapkan di parent (index.html)
+            if (md.id === 'music' || md.id === 'suara') {
+                if (window.parent && typeof window.parent.applyMusicSettings === 'function') {
+                    window.parent.applyMusicSettings();
+                }
+            }
+        }
+
+        window.handleMenuInput = function (action) {
+            if (!isEditing) {
+                if (action === 'top') activeIndex = Math.max(0, activeIndex - 1);
+                else if (action === 'bottom') activeIndex = Math.min(menuData.length - 1, activeIndex + 1);
+                else if (action === 'center') {
+                    if (!menuData[activeIndex].isAction) isEditing = true;
+                    else {
+                        if (menuData[activeIndex].actionType === 'games') {
+                            window.parent.goToGames();
+                        } else if (menuData[activeIndex].actionType === 'reset') {
+                            localStorage.clear();
+                            location.reload();
+                            if (window.parent && typeof window.parent.applyMusicSettings === 'function') window.parent.applyMusicSettings();
+                        }
+                    }
+                }
+            } else {
+                let md = menuData[activeIndex];
+                if (action === 'left') {
+                    md.valIdx = (md.valIdx - 1 + md.values.length) % md.values.length;
+                    saveAndApply(md);
+                } else if (action === 'right') {
+                    md.valIdx = (md.valIdx + 1) % md.values.length;
+                    saveAndApply(md);
+                } else if (action === 'center') {
+                    isEditing = false;
+                }
+            }
+            updateUI();
+        };
+
+        buildMenu();
+        updateUI();
+    </script>
+</body>
+
+</html>
