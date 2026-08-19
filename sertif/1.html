@@ -79,34 +79,43 @@
 
     <!-- SCRIPT LOGIKA KONTROL D-PAD -->
     <script>
-        const scrollArea = document.getElementById('scroll-area');
+    const scrollArea = document.getElementById('scroll-area');
 
-        // Dipanggil oleh index.html ketika tombol fisik BACK ditekan
-        window.handleBackButton = function () {
+    window.handleBackButton = function () {
+        if (window.parent && window.parent.document.getElementById('screen-frame')) {
+            // 1. Sinkronisasi state di index.html
             window.parent.currentScreen = 'education.html';
+            window.parent.basePage = 'education.html';
             window.parent.screenBeforeMenu = 'education.html';
+            window.parent.isNavMode = false;
+            
+            // 2. Perbarui ikon D-Pad di luar
+            if (typeof window.parent.renderDpadIcons === 'function') {
+                window.parent.renderDpadIcons();
+                window.parent.updateBaseIcons();
+            }
+
+            // 3. KUNCI UTAMA: Parent yang mengganti src iframe (hindari isu path relatif GitHub)
+            window.parent.document.getElementById('screen-frame').src = 'education.html';
+        } else {
+            // Fallback jika halaman dibuka langsung tanpa index.html
             window.location.href = '../education.html';
-        };
+        }
+    };
 
-        // Fungsi Panah D-Pad
-        window.handleArrowInput = function (action) {
+    window.handleArrowInput = function (action) {
+        if (action === 'left') {
+            window.handleBackButton();
+            return;
+        }
 
-            // Logika Panah Kiri (Kembali ke halaman Education)
-            if (action === 'left') {
-                window.parent.currentScreen = 'education.html';
-                window.parent.screenBeforeMenu = 'education.html';
-                window.location.href = '../education.html';
-                return;
-            }
-
-            // Logika Panah Atas/Bawah
-            if (action === 'top') {
-                scrollArea.scrollBy({ top: -60, behavior: 'smooth' });
-            } else if (action === 'bottom') {
-                scrollArea.scrollBy({ top: 60, behavior: 'smooth' });
-            }
-        };
-    </script>
+        if (action === 'top') {
+            scrollArea.scrollBy({ top: -60, behavior: 'smooth' });
+        } else if (action === 'bottom') {
+            scrollArea.scrollBy({ top: 60, behavior: 'smooth' });
+        }
+    };
+</script>
 </body>
 
 </html>
