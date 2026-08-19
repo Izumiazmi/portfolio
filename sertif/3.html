@@ -60,43 +60,45 @@
         Use <span class="text-orange-500 font-bold">LEFT</span> to go back
     </div>
     <script>
-    const scrollArea = document.getElementById('scroll-area');
+        const scrollArea = document.getElementById('scroll-area');
 
-    window.handleBackButton = function () {
-        if (window.parent && window.parent.document.getElementById('screen-frame')) {
-            // 1. Sinkronisasi state di index.html
-            window.parent.currentScreen = 'education.html';
-            window.parent.basePage = 'education.html';
-            window.parent.screenBeforeMenu = 'education.html';
-            window.parent.isNavMode = false;
-            
-            // 2. Perbarui ikon D-Pad di luar
-            if (typeof window.parent.renderDpadIcons === 'function') {
-                window.parent.renderDpadIcons();
-                window.parent.updateBaseIcons();
+        window.handleBackButton = function () {
+            try {
+                // Cek apakah halaman dibuka di dalam iframe utama (index.html)
+                if (window.parent && typeof window.parent.handleDpadAction === 'function') {
+
+                    // 1. Matikan mode navigasi bebas agar D-Pad merespons sebagai tab menu
+                    window.parent.isNavMode = false;
+
+                    // 2. Panggil aksi D-Pad Kanan pada parent (index.html)
+                    // Ini otomatis akan meload 'education.html' dengan path yang 100% benar 
+                    // dan mengupdate semua ikon tombol dengan sendirinya.
+                    window.parent.handleDpadAction('right');
+
+                } else {
+                    // Fallback jika dibuka langsung tanpa index.html
+                    window.location.href = '../education.html';
+                }
+            } catch (e) {
+                // Mengatasi jika ada error CORS saat dibuka di local tanpa server
+                window.location.href = '../education.html';
+            }
+        };
+
+        window.handleArrowInput = function (action) {
+            if (action === 'left') {
+                // Tombol D-Pad kiri juga akan menjalankan fungsi Back di atas
+                window.handleBackButton();
+                return;
             }
 
-            // 3. KUNCI UTAMA: Parent yang mengganti src iframe (hindari isu path relatif GitHub)
-            window.parent.document.getElementById('screen-frame').src = 'education.html';
-        } else {
-            // Fallback jika halaman dibuka langsung tanpa index.html
-            window.location.href = '../education.html';
-        }
-    };
-
-    window.handleArrowInput = function (action) {
-        if (action === 'left') {
-            window.handleBackButton();
-            return;
-        }
-
-        if (action === 'top') {
-            scrollArea.scrollBy({ top: -60, behavior: 'smooth' });
-        } else if (action === 'bottom') {
-            scrollArea.scrollBy({ top: 60, behavior: 'smooth' });
-        }
-    };
-</script>
+            if (action === 'top') {
+                scrollArea.scrollBy({ top: -60, behavior: 'smooth' });
+            } else if (action === 'bottom') {
+                scrollArea.scrollBy({ top: 60, behavior: 'smooth' });
+            }
+        };
+    </script>
 </body>
 
 </html>
